@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
-@WebMvcTest(controllers = {BurgerController.class, GlobalExceptionHandler.class,ApplicationPropertiesAndControllerTest.class})
+@WebMvcTest(controllers = {BurgerController.class, GlobalExceptionHandler.class, ApplicationPropertiesAndControllerTest.class})
 @ExtendWith(ResultAnalyzer.class)
 class ApplicationPropertiesAndControllerTest {
 
@@ -70,7 +70,6 @@ class ApplicationPropertiesAndControllerTest {
 
         String serverPort = env.getProperty("server.port");
         assertThat(serverPort).isEqualTo("9000");
-
 
 
         String datasourceUrl = env.getProperty("spring.datasource.url");
@@ -191,9 +190,9 @@ class ApplicationPropertiesAndControllerTest {
     @DisplayName("Find by price test")
     void testFindByPrice() throws Exception {
         List<Burger> burgers = Arrays.asList(sampleBurger);
-        given(burgerDao.findByPrice(sampleBurger.getPrice().intValue())).willReturn(burgers);
+        given(burgerDao.findByPrice((int) sampleBurger.getPrice())).willReturn(burgers);
 
-        mockMvc.perform(get("/burger/price/{price}", sampleBurger.getPrice().intValue()))
+        mockMvc.perform(get("/burger/price/{price}", (int) sampleBurger.getPrice()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].name", is(sampleBurger.getName())));
